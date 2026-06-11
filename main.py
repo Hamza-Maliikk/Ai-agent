@@ -5,10 +5,10 @@ def calculate(expression: str) -> str:
         result = eval(expression)
         return str(result)
     except:
-        return "Calculation galat hai"
+        return "Calculation is wrong"
 
 def get_weather(city: str) -> str:
-    return f"{city} mein aaj 35 degree hai"
+    return f"{city}"
 
 tools = [
     {
@@ -28,6 +28,23 @@ tools = [
             }
         }
     },
+    # {
+    #     "type": "function",
+    #     "function": {
+    #         "name": "email_user",
+    #         "description": "taking user email",
+    #         "parameters": {
+    #             "type": "object",
+    #             "properties": {
+    #                 "email": {
+    #                     "type": "string",
+    #                     "description": "User's email address"
+    #                 }
+    #             },
+    #             "required": ["email"]
+    #         }
+    #     }
+    # },
     {
         "type": "function",
         "function": {
@@ -49,6 +66,7 @@ tools = [
 
 available_tools = {
     "calculate": calculate,
+    # "email_user": email_user,
     "get_weather": get_weather
 }
 
@@ -73,6 +91,7 @@ while True:
     )
 
     if response.message.tool_calls:
+        messages.append(response.message)   # <<< YE LINE MISSING THI
         for tool_call in response.message.tool_calls:
             tool_name = tool_call.function.name
             tool_args = tool_call.function.arguments
